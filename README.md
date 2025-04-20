@@ -1,51 +1,74 @@
 ```markdown
 # Email MCP Server
 
-A FastAPI service exposing two MCP tools to Claude Desktop:
+A FastAPI-based MCP service exposing two tools to Claude Desktop:
 
-- **send_email**: send SMTP email  
-- **list_recent_emails**: list recent IMAP messages (default limit 3)
-
----
-
-## 🔧 Setup
-
-1. **Copy & fill `.env`** (do **not** commit):
-   ```ini
-   SMTP_SERVER=smtp.example.com
-   SMTP_PORT=587
-   SMTP_USERNAME=you@example.com
-   SMTP_PASSWORD=your_smtp_password
-
-   IMAP_SERVER=imap.example.com
-   IMAP_PORT=993
-   IMAP_USERNAME=you@example.com
-   IMAP_PASSWORD=your_imap_password
-   ```
-2. **Create a virtualenv** and install dependencies:
-   ```bash
-   python -m venv .venv
-   source .venv/bin/activate
-   pip install fastapi uvicorn fastapi-mcp pydantic pydantic-settings python-dotenv
-   ```
-3. **Start the server**:
-   ```bash
-   uvicorn main:app --reload --host 0.0.0.0 --port 8000
-   ```
+- **send_email**: send an email via SMTP  
+- **list_recent_emails**: fetch recent emails from an IMAP server  
 
 ---
 
-## 🔗 Claude Desktop Integration
+## Tools
 
-1. (Optional) **SSH tunnel** if the server is remote:
+| Name                 | Description                         |
+|----------------------|-------------------------------------|
+| `send_email`         | Send an email via SMTP              |
+| `list_recent_emails` | List recent messages from IMAP      |
+
+---
+
+## Configuration
+
+Create a `.env` file in the project root (add it to `.gitignore`):
+
+```ini
+# SMTP (sending) settings
+SMTP_SERVER=smtp.example.com
+SMTP_PORT=587
+SMTP_USERNAME=you@example.com
+SMTP_PASSWORD=your_smtp_password
+
+# IMAP (fetching) settings
+IMAP_SERVER=imap.example.com
+IMAP_PORT=993
+IMAP_USERNAME=you@example.com
+IMAP_PASSWORD=your_imap_password
+```
+
+---
+
+## Installation
+
+```bash
+python -m venv .venv
+source .venv/bin/activate      # or `.venv\Scripts\activate` on Windows
+pip install \
+  fastapi uvicorn fastapi-mcp \
+  pydantic pydantic-settings python-dotenv
+pip freeze > requirements.txt
+```
+
+---
+
+## Running
+
+```bash
+uvicorn main:app --reload --host 0.0.0.0 --port 8000
+```
+
+---
+
+## Claude Desktop Integration
+
+1. (If remote) open an SSH tunnel:
    ```bash
    ssh -N -L 9000:localhost:8000 user@remote.host
    ```
-2. **Install** the local bridge:
+2. Install the bridge:
    ```bash
    pip install mcp-proxy
    ```
-3. **Edit** your `claude_desktop_config.json`:
+3. Edit your `claude_desktop_config.json`:
    ```jsonc
    {
      "mcpServers": {
@@ -56,23 +79,43 @@ A FastAPI service exposing two MCP tools to Claude Desktop:
      }
    }
    ```
-4. **Quit & restart** Claude Desktop.  
-   You should see **send_email** and **list_recent_emails** in the 🔨 Tools menu.
+4. Quit & restart Claude Desktop → you will see:
+   - `send_email`
+   - `list_recent_emails`
 
 ---
 
-## ▶️ Usage Examples
+## Usage Examples
 
-- **Natural language**:  
-  “Send an email to me@example.com with subject ‘Hi’ and body ‘Hello from MCP!’”  
-- **Tool form**:  
-  Click **list_recent_emails**, set `limit=3`, then Run.
+### send_email
 
----
+```json
+{
+  "tool": "send_email",
+  "input": {
+    "params": {
+      "to": ["receiver@example.com"],
+      "subject": "Test Email",
+      "body": "Hello from MCP!",
+      "html": false
+    }
+  }
+}
+```
 
-## Troubleshooting
+### list_recent_emails
 
-- **Login fails**: use an app‑specific password (e.g. Gmail 2FA).  
-- **Timeouts**: default MCP timeout is 5 s—reduce `limit` or optimize IMAP logic.  
-- **No tools**: confirm `mcp-proxy` args and fully restart Claude Desktop.  
+```json
+{
+  "tool": "list_recent_emails",
+  "input": {
+    "params": {
+      "imap_server": "imap.gmail.com",
+      "username": "you@example.com",
+      "password": "your_imap_password",
+      "limit": 5
+    }
+  }
+}
+```
 ```
