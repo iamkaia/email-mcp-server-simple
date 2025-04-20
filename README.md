@@ -148,7 +148,7 @@ After saving, **quit & restart** Claude Desktop. The 🔨 Tools menu will list
   - `read_file`, `write_file`, `list_directory`, `search_files`, `get_file_info`, …  
 - **Operate** only within the mounted directories.
 
-#### detailed intro of tool_list [tools.md](./tools.md)
+#### detailed intro of tool_list [tools.md](./tools.md) 
 
 ---
 
