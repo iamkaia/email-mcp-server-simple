@@ -45,30 +45,30 @@ This repository hosts five Model Context Protocol (MCP) servers you can mount in
   ```
 
 3. **fetch(in different terminal)**:
-   ```
-   pip install mcp-server-fetch
-   python -m mcp_server_fetch
-   ```
+  ```
+  pip install mcp-server-fetch
+  python -m mcp_server_fetch
+  ```
 
 4. **Word-MCP-Server(in different terminal)**:
-    ```
-    # Clone the repository
-    git clone https://github.com/GongRzhe/Office-Word-MCP-Server.git
-    cd Office-Word-MCP-Server
+  ```
+  # Clone the repository
+  git clone https://github.com/GongRzhe/Office-Word-MCP-Server.git
+  cd Office-Word-MCP-Server
 
-    # Install dependencies
-    pip install -r requirements.txt
+  # Install dependencies
+  pip install -r requirements.txt
 
-    #start
-    python setup_mcp.py
-    ```
+  #start
+  python setup_mcp.py
+  ```
 5. **filesystem(in different terminal)**:
-   ```
-   # filesystem (via NPX) (you can ignore this step if you have nide and npx)
-   npx -y @modelcontextprotocol/server-filesystem \
-     "/Users/username/Desktop" \
-     "/path/to/other/allowed/dir"
-   ```
+  ```
+  # filesystem (via NPX) (you can ignore this step if you have nide and npx)
+  npx -y @modelcontextprotocol/server-filesystem \
+    "/Users/username/Desktop" \
+    "/path/to/other/allowed/dir"
+  ```
 
 ---
 
@@ -128,14 +128,14 @@ After saving, **quit & restart** Claude Desktop. The 🔨 Tools menu will list
 ## 📦 Servers & Tools
 
 ### 1. **line-bot**  
-- **Tools**: `send_line_message`  
+- **Tools**: `send_line_message`, `broadcast_flex_message`, `broadcast_text_message`…
 - **Push** messages into a Line chat.
 
 ### 2. **email_mcp**  
 - **Tools**: `send_email`, `list_recent_emails`
 
 ### 3. **fetch**  
-- **Tools**: `fetch_page`  
+- **Tools**: `fetch_page`
 - **Input**: `url` ⇒ **Output**: title, headings, snippet.
 
 ### 4. **word-document-service**  
@@ -147,6 +147,8 @@ After saving, **quit & restart** Claude Desktop. The 🔨 Tools menu will list
 - **Tools**:  
   - `read_file`, `write_file`, `list_directory`, `search_files`, `get_file_info`, …  
 - **Operate** only within the mounted directories.
+
+#### detailed intro of tool_list [TOOLS.md](./TOOLS.md)
 
 ---
 
@@ -187,11 +189,9 @@ After saving, **quit & restart** Claude Desktop. The 🔨 Tools menu will list
 // filesystem read
 {
   "tool":"read_file",
-  "input":{"params":{"path":"C:/Users/Grace Ho/OneDrive/Desktop/notes.txt"}}
+  "input":{"params":{"path":"to//the//path//notes.txt"}}
 }
 ```
-
----
 
 ## 📃 License
 
