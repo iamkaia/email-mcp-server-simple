@@ -42,10 +42,8 @@ IMAP_PASSWORD=your_imap_password
 ```bash
 python -m venv .venv
 source .venv/bin/activate      # or `.venv\Scripts\activate` on Windows
-pip install \
-  fastapi uvicorn fastapi-mcp \
-  pydantic pydantic-settings python-dotenv
-pip freeze > requirements.txt
+pip install -r requirements.txt
+
 ```
 
 ---
