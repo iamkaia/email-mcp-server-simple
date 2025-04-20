@@ -1,4 +1,3 @@
-```markdown
 # MCP Servers Collection
 
 This repository hosts five Model Context Protocol (MCP) servers you can mount into Claude Desktop:
@@ -9,61 +8,66 @@ This repository hosts five Model Context Protocol (MCP) servers you can mount in
 4. **word-document-service**  
 5. **filesystem**  
 
----
-
 ## 🚀 Quick Start
 
-1. **Clone & enter**  
-   ```bash
-   git clone https://github.com/iamkaia/email-mcp-server-simple.git
-   cd email-mcp-server-simple
+1. **line-bot(in different terminal)**  
+  ```
+  git clone https://github.com/iamkaia/email-mcp-server-simple.git
+  cd email-mcp-server-simple
+
+  ## **Set up Python env and install requirement thing(for _email_mcp_, )**  
+  python -m venv .venv
+  source .venv/bin/activate      # Windows: .\.venv\Scripts\activate
+  pip install -r requirements.txt
+
+  ### Fill `.env`** (for `email_mcp` only—do **not** commit):
+  # SMTP
+  SMTP_SERVER=smtp.example.com
+  SMTP_PORT=587
+  SMTP_USERNAME=you@example.com
+  SMTP_PASSWORD=your_smtp_password
+
+  # IMAP
+  IMAP_SERVER=imap.example.com
+  IMAP_PORT=993
+  IMAP_USERNAME=you@example.com
+  IMAP_PASSWORD=your_imap_password
+
+  ## start
+  uvicorn main:app --reload --host 0.0.0.0 --port 8000
+  ```
+
+2. **line-bot-mcp(in different terminal)** :
+  ```
+  # Clone the repository
+  git clone git@github.com:line/line-bot-mcp-server.git
+  cd line-bot-mcp-server && npm install && npm run build
+  ```
+
+3. **fetch(in different terminal)**:
+   ```
+   pip install mcp-server-fetch
+   python -m mcp_server_fetch
    ```
 
-2. **Set up Python env** (for _email_mcp_, _fetch_, _word-document-service_)  
-   ```bash
-   python -m venv .venv
-   source .venv/bin/activate      # Windows: .\.venv\Scripts\activate
-   pip install -r requirements.txt
-   ```
+4. **Word-MCP-Server(in different terminal)**:
+    ```
+    # Clone the repository
+    git clone https://github.com/GongRzhe/Office-Word-MCP-Server.git
+    cd Office-Word-MCP-Server
 
-3. **Fill `.env`** (for `email_mcp` only—do **not** commit):
-   ```ini
-   # SMTP
-   SMTP_SERVER=smtp.example.com
-   SMTP_PORT=587
-   SMTP_USERNAME=you@example.com
-   SMTP_PASSWORD=your_smtp_password
+    # Install dependencies
+    pip install -r requirements.txt
 
-   # IMAP
-   IMAP_SERVER=imap.example.com
-   IMAP_PORT=993
-   IMAP_USERNAME=you@example.com
-   IMAP_PASSWORD=your_imap_password
+    #start
+    python setup_mcp.py
+    ```
+5. **filesystem(in different terminal)**:
    ```
-
-4. **Install Node dependencies** (for _line-bot_ and _filesystem_):
-   ```bash
-   cd line-bot-mcp-server && npm install && cd ..
-   # filesystem uses npx/@modelcontextprotocol, no local build needed
-   ```
-
-5. **Start each server** (in separate terminals):
-   ```bash
-   # email_mcp + fetch + word-document-service
-   uvicorn email_mcp.main:app --host 0.0.0.0 --port 8000
-   uvicorn fetch.main:app    --host 0.0.0.0 --port 8001
-   uvicorn word-doc.main:app --host 0.0.0.0 --port 8002
-   ```
-   ```bash
-   # line-bot
-   cd line-bot-mcp-server
-   node dist/index.js
-   ```
-   ```bash
-   # filesystem (via NPX)
+   # filesystem (via NPX) (you can ignore this step if you have nide and npx)
    npx -y @modelcontextprotocol/server-filesystem \
-     "C:/Users/Grace Ho/OneDrive/Desktop" \
-     "C:/Users/Grace Ho/OneDrive/Documents"
+     "/Users/username/Desktop" \
+     "/path/to/other/allowed/dir"
    ```
 
 ---
@@ -77,31 +81,40 @@ Edit your `claude_desktop_config.json` to spawn each MCP tool:
   "mcpServers": {
     "line-bot": {
       "command": "node",
-      "args": ["C:/…/line-bot-mcp-server/dist/index.js"],
+      "args": [
+        "to\\the\\path\\line-bot-mcp-server\\dist\\index.js"
+      ],
       "env": {
-        "CHANNEL_ACCESS_TOKEN": "...",
-        "DESTINATION_USER_ID": "..."
+        "CHANNEL_ACCESS_TOKEN" : "xxx",
+        "DESTINATION_USER_ID" : "xxx"
       }
     },
     "email_mcp": {
-      "command": "C:/…/mcp-proxy.exe",
-      "args": ["http://localhost:8000/mcp"]
+      "command": "to\\the\\path\\mcp-proxy.exe",
+      "args": [
+        "http://localhost:9000/mcp"      
+      ]
     },
     "fetch": {
-      "command": "C:/…/mcp-proxy.exe",
-      "args": ["http://localhost:8001/mcp"]
+      "command": "python",
+      "args": ["-m", "mcp_server_fetch"]
     },
-    "word-document-service": {
-      "command": "C:/…/mcp-proxy.exe",
-      "args": ["http://localhost:8002/mcp"]
+    "word-document-server": {
+      "command": "to\\the\\path\\python.exe",
+      "args": [
+        "to\\the\\path\\word_server.py"
+      ],
+      "env": {
+        "PYTHONPATH": "to\\the\\path\\Office-Word-MCP-Server"
+      }
     },
     "filesystem": {
       "command": "npx",
       "args": [
         "--yes",
         "@modelcontextprotocol/server-filesystem",
-        "C:/Users/Grace Ho/OneDrive/Desktop",
-        "C:/Users/Grace Ho/OneDrive/Documents"
+        "/Users/username/Desktop",
+        "/path/to/other/allowed/dir"
       ]
     }
   }
