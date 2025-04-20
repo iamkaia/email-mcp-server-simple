@@ -21,7 +21,6 @@ A FastAPI-based MCP service exposing two tools to Claude Desktop:
 
 Create a `.env` file in the project root (add it to `.gitignore`):
 
-```ini
 # SMTP (sending) settings
 SMTP_SERVER=smtp.example.com
 SMTP_PORT=587
@@ -42,7 +41,8 @@ IMAP_PASSWORD=your_imap_password
 ```bash
 python -m venv .venv
 source .venv/bin/activate      # or `.venv\Scripts\activate` on Windows
-pip install -r requirements.txt
+pip install -r requirements.txt  
+
 
 ```
 
