@@ -1,0 +1,13 @@
+{
+  "tool": "send_email",
+  "input": {
+    "params": {
+      "to": ["iamsying.hhh@gmail.com"],
+      "subject": "測試信件",
+      "body": "Hello from MCP!",
+      "html": false
+    }
+  }
+}
+
+  

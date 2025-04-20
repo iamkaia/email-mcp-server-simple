@@ -1,0 +1,11 @@
+{
+    "tool": "search_agoda_listings",
+    "input": {
+      "params": {
+        "propertyIds": [12157],
+        "checkIn":  "2022-12-23",
+        "checkOut": "2022-12-24"
+      }
+    }
+  }
+  
